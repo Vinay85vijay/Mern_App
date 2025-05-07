@@ -1,125 +1,136 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "Authentication API",
-      "version": "1.0.0",
-      "description": "API documentation for user authentication"
-    },
-    "security": [
-  {
-    "bearerAuth": []
-  }
-                ],
-    "paths": {
-      "/api/auth/register": {
-        "post": {
-          "summary": "Register a new user",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "user@example.com"
-                    },
-                    "password": {
-                      "type": "string",
-                      "example": "password123"
-                    }
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Authentication API",
+    "version": "1.0.0",
+    "description": "API documentation for user authentication"
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "admin",
+                    "description": "Role of the user (e.g., user, admin)"
                   }
-                }
+                },
+                "required": ["email", "password"]
               }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "User registered successfully"
-            },
-            "400": {
-              "description": "User already exists"
             }
           }
-        }
-      },
-      "/api/auth/login": {
-        "post": {
-          "summary": "Login and get JWT token",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "user@example.com"
-                    },
-                    "password": {
-                      "type": "string",
-                      "example": "password123"
-                    }
-                  }
-                }
-              }
-            }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
           },
-          "responses": {
-            "200": {
-              "description": "Login successful",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "example": "Login successful"
-                      },
-                      "token": {
-                        "type": "string",
-                        "example": "your_jwt_token"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid credentials"
-            },
-            "404": {
-              "description": "User not found"
-            }
+          "400": {
+            "description": "User already exists"
           }
         }
       }
     },
-    "components": {
-      "schemas": {
-        "User": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "example": "user@example.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "password123"
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login and get JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
             }
           }
-        }
-      },  "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "your_jwt_token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "User not found"
+          }
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          },
+          "role": {
+            "type": "string",
+            "example": "admin"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
   }
-  
+}

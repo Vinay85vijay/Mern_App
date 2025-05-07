@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 
-exports.register = async ({ email, password }) => {
+exports.register = async ({ email, password, role }) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     const err = new Error('User already exists');
@@ -9,7 +9,7 @@ exports.register = async ({ email, password }) => {
     throw err;
   }
 
-  const user = new User({ email, password });
+  const user = new User({ email, password, role: role || 'user' });
   await user.save();
   return 'User registered successfully';
 };
@@ -29,6 +29,6 @@ exports.login = async ({ email, password }) => {
     throw err;
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
   return { message: 'Login successful', token };
 };

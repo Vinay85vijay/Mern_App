@@ -1,14 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { getItem, getItems, createItem, updateItem, deleteItem } = require('../controllers/item.controller');
-const validateItem = require('../middlewares/itemValidator');
-// Protect the route
-const authMiddleware = require('../middlewares/auth.middleware'); 
+const {
+  getItem,
+  getItems,
+  createItem,
+  updateItem,
+  deleteItem
+} = require('../controllers/item.controller');
 
-router.get('/:query', authMiddleware, getItem); 
-router.get('/', authMiddleware, getItems); 
-router.post('/', authMiddleware, ...validateItem, createItem); 
-router.put('/:id', authMiddleware, validateItem, updateItem); 
-router.delete('/:id', authMiddleware, deleteItem); 
+const validateItem = require('../middlewares/itemValidator');
+const authMiddleware = require('../middlewares/auth.middleware');
+const authorize = require('../middlewares/authorize');
+
+// Only 'admin' can create, update, delete; 'user' can only read
+router.get('/:query', authMiddleware, authorize('admin', 'user'), getItem);
+router.get('/', authMiddleware, authorize('admin', 'user'), getItems);
+router.post('/', authMiddleware, authorize('admin'), ...validateItem, createItem);
+router.put('/:id', authMiddleware, authorize('admin'), validateItem, updateItem);
+router.delete('/:id', authMiddleware, authorize('admin'), deleteItem);
 
 module.exports = router;
