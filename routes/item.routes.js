@@ -11,6 +11,8 @@ const {
 const validateItem = require('../middlewares/itemValidator');
 const authMiddleware = require('../middlewares/auth.middleware');
 const authorize = require('../middlewares/authorize');
+const { itemRateLimiter } = require('../middlewares/rateLimiter');
+router.use(itemRateLimiter);
 
 // Only 'admin' can create, update, delete; 'user' can only read
 router.get('/:query', authMiddleware, authorize('admin', 'user'), getItem);
