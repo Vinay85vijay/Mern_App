@@ -32,6 +32,8 @@ swaggerSetup(app);
 app.use('/api/items', itemRoutes);
 app.use('/api/auth', authRoutes);
 app.use(errorHandler);
+app.use('/uploads', express.static('uploads'));
+
 // Catch-all route for any undefined endpoints (404)
 app.all('*', (req, res) => res.status(404).json({ error: 'Not Found' }));
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

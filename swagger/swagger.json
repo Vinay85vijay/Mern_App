@@ -69,9 +69,27 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Item"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Item Name"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "inStock": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
@@ -194,7 +212,8 @@
           "inStock": {
             "type": "boolean",
             "example": true
-          }
+          },
+          "image": { "type": "string", "format": "binary" }
         }
       }
     },

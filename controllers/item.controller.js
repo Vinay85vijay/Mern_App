@@ -21,18 +21,29 @@ exports.getItem = async (req, res) => {
 
 exports.createItem = async (req, res) => {
   try {
-    const { exists, item } = await itemService.createItem(req.body);
+    // Attach image path to body if file exists
+    const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
+
+          const itemData = {
+            ...req.body,
+            image: imageUrl
+          };
+
+    const { exists, item } = await itemService.createItem(itemData);
+
     if (exists) {
       return res.status(409).json({
         message: 'Product already exists. Check the details below',
         item
       });
     }
+
     res.status(201).json(item);
   } catch {
     res.status(400).json({ error: 'Invalid data' });
   }
 };
+
 
 exports.updateItem = async (req, res) => {
   try {
